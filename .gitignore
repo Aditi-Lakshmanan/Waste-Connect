@@ -3,6 +3,6 @@ target/
 *.lck
 *.lock.db
 *.trace.db
-logs/*.lck
+logs/
 .idea/
 *.iml

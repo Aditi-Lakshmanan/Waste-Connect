@@ -20,6 +20,7 @@ import com.wasteconnect.pattern.PriorityStrategy;
 import com.wasteconnect.pattern.RoutingStrategy;
 import com.wasteconnect.service.AdminService;
 import com.wasteconnect.service.NotificationService;
+import com.wasteconnect.util.BackgroundLoader;
 import com.wasteconnect.model.Notification;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -250,7 +251,7 @@ public class AdminWorkspaceView extends BorderPane {
         simulatorControls.setManaged(simulatorControls.isVisible());
         moduleActionControls.setVisible("households".equals(currentModule) || "zones".equals(currentModule)
             || "bins".equals(currentModule) || "vehicles".equals(currentModule) || "collectors".equals(currentModule)
-            || "complaints".equals(currentModule) || "pickers".equals(currentModule));
+            || "complaints".equals(currentModule) || "pickers".equals(currentModule) || "hotspots".equals(currentModule) || "benchmark".equals(currentModule));
         moduleActionControls.setManaged(moduleActionControls.isVisible());
         if ("households".equals(currentModule)) {
             configureHouseholdActions();
@@ -328,44 +329,12 @@ public class AdminWorkspaceView extends BorderPane {
                     configurePickerActions();
             }
             case "hotspots" -> {
-                moduleTitle.setText("Garbage Vulnerable Hotspots");
-                headers = List.of("Zone", "Risk Level", "Score", "Complaints", "Overflows", "Location", "Recommendation");
-                rows = adminService.detectHotspots().stream().map(h -> List.of(
-                        h.zoneName(), h.riskLevel(), String.format("%.1f", h.riskScore()),
-                        Integer.toString(h.complaintCount()), Integer.toString(h.overflowCount()),
-                        coordinates(h.latitude(), h.longitude()), h.recommendation()))
-                        .toList();
+                showHotspots(query);
+                return;
             }
             case "benchmark" -> {
-                moduleTitle.setText("Route Optimization Benchmark");
-                headers = List.of("Metric / Strategy", "Fixed-Schedule (Traditional)", "Priority-Based (WasteConnect)", "Advantage");
-                Zone firstZone = adminService.getAllZones().isEmpty() ? null : adminService.getAllZones().get(0);
-                if (firstZone != null) {
-                    try {
-                        var comp = adminService.runBenchmark(firstZone.getId());
-                        rows = List.of(
-                                List.of("Total Distance", String.format("%.1f km", comp.fixedResult().totalDistanceKm()),
-                                        String.format("%.1f km", comp.priorityResult().totalDistanceKm()),
-                                        String.format("%.1f%% saved", comp.getDistanceSavedPercentage())),
-                                List.of("Stops Evaluated", Integer.toString(comp.fixedResult().totalStopsEvaluated()),
-                                        Integer.toString(comp.priorityResult().totalStopsEvaluated()), "Full Coverage"),
-                                List.of("Missed Pickups", Integer.toString(comp.fixedResult().missedPickups()),
-                                        Integer.toString(comp.priorityResult().missedPickups()),
-                                        String.format("%d avoided", comp.getMissedPickupsReduction())),
-                                List.of("Overflows Prevented", Integer.toString(comp.fixedResult().overflowIncidentsPrevented()),
-                                        Integer.toString(comp.priorityResult().overflowIncidentsPrevented()), "Proactive Emptying"),
-                                List.of("Fill at Collection", String.format("%.1f%%", comp.fixedResult().averageFillAtCollection()),
-                                        String.format("%.1f%%", comp.priorityResult().averageFillAtCollection()),
-                                        String.format("+%.1f%% efficiency", comp.getEfficiencyGainPercentage())),
-                                List.of("Execution Time", comp.fixedResult().executionTimeMs() + " ms",
-                                        comp.priorityResult().executionTimeMs() + " ms", "Sub-second Optimal")
-                        );
-                    } catch (Exception e) {
-                        rows = List.of(List.of("Benchmark Status", "Run Error: " + e.getMessage(), "-", "-"));
-                    }
-                } else {
-                    rows = List.of();
-                }
+                showBenchmark(query);
+                return;
             }
             case "analytics" -> {
                 moduleTitle.setText("Analytics");
@@ -396,6 +365,10 @@ public class AdminWorkspaceView extends BorderPane {
             }
         }
 
+        applyTableData(headers, rows, query, "records");
+    }
+
+    private void applyTableData(List<String> headers, List<List<String>> rows, String query, String label) {
         List<List<String>> filteredRows = query.isEmpty() ? rows : rows.stream()
                 .filter(row -> row.stream().anyMatch(value -> value.toLowerCase().contains(query.toLowerCase())))
                 .toList();
@@ -405,9 +378,85 @@ public class AdminWorkspaceView extends BorderPane {
         int toIndex = Math.min(fromIndex + PAGE_SIZE, resultCount);
         setTable(headers, filteredRows.subList(fromIndex, toIndex));
         resultSummary.setText("Showing " + (resultCount == 0 ? 0 : fromIndex + 1) + "-" + toIndex + " of "
-            + resultCount + " records" + (query.isEmpty() ? "" : " matching search"));
+            + resultCount + " " + label + (query.isEmpty() ? "" : " matching search"));
         pageLabel.setText("Page " + (currentPage + 1) + " / " + Math.max(1, (resultCount + PAGE_SIZE - 1) / PAGE_SIZE));
         updatePager();
+    }
+
+    private void showHotspots(String query) {
+        moduleTitle.setText("Garbage Vulnerable Hotspots");
+        moduleActionControls.getChildren().clear();
+        Button refreshBtn = new Button("Re-analyze Hotspots");
+        refreshBtn.setOnAction(e -> showHotspots(searchField.getText() == null ? "" : searchField.getText().trim()));
+        moduleActionControls.getChildren().add(refreshBtn);
+        moduleActionControls.setVisible(true);
+        moduleActionControls.setManaged(true);
+        resultSummary.setText("Analyzing garbage vulnerable hotspots in background...");
+
+        BackgroundLoader.load(
+            () -> adminService.detectHotspots(),
+            hotspots -> {
+                List<String> headers = List.of("Zone", "Risk Level", "Score", "Complaints", "Overflows", "Location", "Recommendation");
+                List<List<String>> rows = hotspots.stream().map(h -> List.of(
+                        h.zoneName(), h.riskLevel(), String.format("%.1f", h.riskScore()),
+                        Integer.toString(h.complaintCount()), Integer.toString(h.overflowCount()),
+                        coordinates(h.latitude(), h.longitude()), h.recommendation()))
+                        .toList();
+                applyTableData(headers, rows, query, "hotspots");
+            },
+            ex -> resultSummary.setText("Failed to analyze hotspots: " + ex.getMessage())
+        );
+    }
+
+    private void showBenchmark(String query) {
+        moduleTitle.setText("Route Optimization Benchmark");
+        moduleActionControls.getChildren().clear();
+        List<Zone> zones = adminService.getAllZones();
+        if (zones.isEmpty()) {
+            resultSummary.setText("No zones available to benchmark.");
+            setTable(List.of("Metric", "Status"), List.of(List.of("Benchmark", "No zones found")));
+            return;
+        }
+        ComboBox<Zone> zoneSelect = new ComboBox<>(FXCollections.observableArrayList(zones));
+        zoneSelect.setPromptText("Select Zone");
+        zoneSelect.getSelectionModel().selectFirst();
+        Button runBtn = new Button("Run Benchmark Comparison");
+        moduleActionControls.getChildren().addAll(new Label("Target Zone:"), zoneSelect, runBtn);
+        moduleActionControls.setVisible(true);
+        moduleActionControls.setManaged(true);
+
+        java.util.function.Consumer<Zone> execute = selectedZone -> {
+            if (selectedZone == null) return;
+            resultSummary.setText("Running route benchmark simulation for " + selectedZone.getName() + " in background...");
+            BackgroundLoader.load(
+                () -> adminService.runBenchmark(selectedZone.getId()),
+                comp -> {
+                    List<String> headers = List.of("Metric / Strategy", "Fixed-Schedule (Traditional)", "Priority-Based (WasteConnect)", "Advantage");
+                    List<List<String>> rows = List.of(
+                            List.of("Total Distance", String.format("%.1f km", comp.fixedResult().totalDistanceKm()),
+                                    String.format("%.1f km", comp.priorityResult().totalDistanceKm()),
+                                    String.format("%.1f%% saved", comp.getDistanceSavedPercentage())),
+                            List.of("Stops Evaluated", Integer.toString(comp.fixedResult().totalStopsEvaluated()),
+                                    Integer.toString(comp.priorityResult().totalStopsEvaluated()), "Full Coverage"),
+                            List.of("Missed Pickups", Integer.toString(comp.fixedResult().missedPickups()),
+                                    Integer.toString(comp.priorityResult().missedPickups()),
+                                    String.format("%d avoided", comp.getMissedPickupsReduction())),
+                            List.of("Overflows Prevented", Integer.toString(comp.fixedResult().overflowIncidentsPrevented()),
+                                    Integer.toString(comp.priorityResult().overflowIncidentsPrevented()), "Proactive Emptying"),
+                            List.of("Fill at Collection", String.format("%.1f%%", comp.fixedResult().averageFillAtCollection()),
+                                    String.format("%.1f%%", comp.priorityResult().averageFillAtCollection()),
+                                    String.format("+%.1f%% efficiency", comp.getEfficiencyGainPercentage())),
+                            List.of("Execution Time", comp.fixedResult().executionTimeMs() + " ms",
+                                    comp.priorityResult().executionTimeMs() + " ms", "Sub-second Optimal")
+                    );
+                    applyTableData(headers, rows, query, "benchmark metrics");
+                },
+                ex -> resultSummary.setText("Benchmark run failed: " + ex.getMessage())
+            );
+        };
+
+        runBtn.setOnAction(e -> execute.accept(zoneSelect.getValue()));
+        execute.accept(zoneSelect.getValue());
     }
 
     private void showHouseholds(String query) {
@@ -638,18 +687,21 @@ public class AdminWorkspaceView extends BorderPane {
             chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV files", "*.csv"));
             java.io.File target = chooser.showSaveDialog(getScene() == null ? null : getScene().getWindow());
             if (target == null) return;
-            try {
-                switch (reportType) {
-                    case "households" -> adminService.exportHouseholdsReport(target);
-                    case "bins" -> adminService.exportBinsReport(target);
-                    case "complaints" -> adminService.exportComplaintsReport(target);
-                    case "points" -> adminService.exportPointsLedgerReport(target);
-                    default -> throw new IllegalArgumentException("Unknown report type: " + reportType);
-                }
-                resultSummary.setText("Report exported to " + target.getAbsolutePath());
-            } catch (Exception exception) {
-                resultSummary.setText(exception.getMessage() == null ? "Report export failed." : exception.getMessage());
-            }
+            resultSummary.setText("Exporting " + label.toLowerCase() + " to " + target.getName() + " in background...");
+            BackgroundLoader.load(
+                () -> {
+                    switch (reportType) {
+                        case "households" -> adminService.exportHouseholdsReport(target);
+                        case "bins" -> adminService.exportBinsReport(target);
+                        case "complaints" -> adminService.exportComplaintsReport(target);
+                        case "points" -> adminService.exportPointsLedgerReport(target);
+                        default -> throw new IllegalArgumentException("Unknown report type: " + reportType);
+                    }
+                    return target.getAbsolutePath();
+                },
+                path -> resultSummary.setText("Report exported to " + path),
+                ex -> resultSummary.setText(ex.getMessage() == null ? "Report export failed." : ex.getMessage())
+            );
         });
         return button;
     }
