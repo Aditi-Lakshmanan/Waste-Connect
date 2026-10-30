@@ -177,6 +177,42 @@ public class RoleWorkspaceView extends BorderPane {
                 column("Details", RewardTransaction::getDescription));
         TextField redeemAmount = field("Points to redeem", "");
         TextField rewardName = field("Reward", "");
+        ComboBox<String> rewardPresets = new ComboBox<>();
+        rewardPresets.getItems().addAll(
+                "Reward presets...",
+                "Electricity Bill Rebate (20 pts)",
+                "City Bus Pass (50 pts)",
+                "Supermarket Voucher (75 pts)",
+                "Compost Kit Subsidy (100 pts)",
+                "Custom Reward"
+        );
+        rewardPresets.getSelectionModel().selectFirst();
+        rewardPresets.setOnAction(e -> {
+            String selected = rewardPresets.getValue();
+            if (selected == null || selected.startsWith("Reward")) return;
+            switch (selected) {
+                case "Electricity Bill Rebate (20 pts)" -> {
+                    rewardName.setText("Electricity Bill Rebate");
+                    redeemAmount.setText("20");
+                }
+                case "City Bus Pass (50 pts)" -> {
+                    rewardName.setText("City Bus Pass");
+                    redeemAmount.setText("50");
+                }
+                case "Supermarket Voucher (75 pts)" -> {
+                    rewardName.setText("Supermarket Voucher");
+                    redeemAmount.setText("75");
+                }
+                case "Compost Kit Subsidy (100 pts)" -> {
+                    rewardName.setText("Compost Kit Subsidy");
+                    redeemAmount.setText("100");
+                }
+                default -> {
+                    rewardName.clear();
+                    redeemAmount.clear();
+                }
+            }
+        });
         Button redeem = new Button("Redeem points");
         redeem.setOnAction(event -> runAction(() -> {
             citizenService.redeemPoints(user.getId(), parseInt(redeemAmount, "Points"), rewardName.getText());
@@ -187,7 +223,7 @@ public class RoleWorkspaceView extends BorderPane {
             status.setText(description.contains("Code:") ? description.substring(description.indexOf("Code:")) : description);
         }));
         VBox rewards = new VBox(12, heading("Rewards wallet", "Points are earned or deducted when a collector records your segregation quality."),
-                pointsLabel, formRow(redeemAmount, rewardName, redeem), rewardsTable);
+                pointsLabel, formRow(rewardPresets, redeemAmount, rewardName, redeem), rewardsTable);
         rewards.setPadding(new Insets(20));
         VBox.setVgrow(rewardsTable, Priority.ALWAYS);
         tabs.getTabs().add(tab("Points", rewards));
@@ -342,6 +378,11 @@ public class RoleWorkspaceView extends BorderPane {
         collectedColumn.setMinWidth(100);
         collectedColumn.setPrefWidth(110);
         routeTable.getColumns().add(collectedColumn);
+        routeTable.getSelectionModel().selectedItemProperty().addListener((obs, oldStop, newStop) -> {
+            if (newStop != null && (collectedWeight.getText() == null || collectedWeight.getText().isBlank())) {
+                collectedWeight.setText(String.format("%.1f", newStop.getDemandKg()));
+            }
+        });
         Button recordStop = new Button("Record selected stop");
         recordStop.setOnAction(event -> runAction(() -> {
             RouteStop selected = requireSelection(routeTable, "Select a route stop first.");
@@ -405,8 +446,8 @@ public class RoleWorkspaceView extends BorderPane {
                 column("Weight", listing -> String.format("%.1f kg", listing.getWeightKg())),
                 column("Estimated value", listing -> String.format("₹%.0f", listing.getEstimatedValue())),
                 column("Address", RecyclableListing::getAddress));
-        pickerLatitudeField = field("Your latitude", "");
-        pickerLongitudeField = field("Your longitude", "");
+        pickerLatitudeField = field("Your latitude", "12.9716");
+        pickerLongitudeField = field("Your longitude", "77.5946");
         Button updateLocation = new Button("Find nearby");
         updateLocation.setOnAction(event -> runAction(() -> {
             new Location(Double.parseDouble(pickerLatitudeField.getText().trim()),
@@ -436,6 +477,11 @@ public class RoleWorkspaceView extends BorderPane {
                 column("Address", RecyclableListing::getAddress),
                 column("Status", listing -> listing.getStatus().name()));
         TextField actualWeight = field("Measured kg", "");
+        claimedListingsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldItem, newItem) -> {
+            if (newItem != null && (actualWeight.getText() == null || actualWeight.getText().isBlank())) {
+                actualWeight.setText(String.format("%.1f", newItem.getWeightKg()));
+            }
+        });
         Button complete = new Button("Complete selected pickup");
         complete.setOnAction(event -> runAction(() -> {
             RecyclableListing selected = requireSelection(claimedListingsTable, "Select a claimed pickup first.");

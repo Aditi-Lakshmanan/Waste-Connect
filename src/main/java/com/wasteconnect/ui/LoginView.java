@@ -132,16 +132,45 @@ public class LoginView extends BorderPane {
             }
         });
 
+        emailField.setOnAction(event -> loginButton.fire());
+        passwordField.setOnAction(event -> loginButton.fire());
+
         VBox fields = new VBox(12, roleSelector, emailField, passwordField, errorLabel, loginButton);
         fields.setFillWidth(true);
 
-        HBox hintRow = new HBox();
+        HBox hintRow = new HBox(8);
         hintRow.setAlignment(Pos.CENTER_LEFT);
-        Label hintTitle = new Label("Demo accounts:");
+        Label hintTitle = new Label("Demo:");
         hintTitle.setStyle("-fx-font-weight: bold; -fx-text-fill: #DDE8E0;");
-        Label hint = new Label("Select an account type to view its demo sign-in.");
-        hint.setTextFill(Color.web("#A2B1A7"));
-        hintRow.getChildren().addAll(hintTitle, hint);
+        Label hint = new Label("admin@wasteconnect.com / Admin@123");
+        hint.setTextFill(Color.web("#83D59D"));
+        hint.setStyle("-fx-underline: true; -fx-cursor: hand;");
+        Button fillButton = new Button("Auto-fill");
+        fillButton.setStyle("-fx-font-size: 11px; -fx-background-color: #24352B; -fx-text-fill: #83D59D; -fx-cursor: hand; -fx-background-radius: 4;");
+
+        Runnable autoFill = () -> {
+            switch (roleSelector.getValue()) {
+                case ADMIN -> {
+                    emailField.setText("admin@wasteconnect.com");
+                    passwordField.setText("Admin@123");
+                }
+                case CITIZEN -> {
+                    emailField.setText("citizen1@wasteconnect.com");
+                    passwordField.setText("Citizen@123");
+                }
+                case COLLECTOR -> {
+                    emailField.setText("collector1@wasteconnect.com");
+                    passwordField.setText("Collect@123");
+                }
+                case WASTE_PICKER -> {
+                    emailField.setText("picker1@wasteconnect.com");
+                    passwordField.setText("Picker@123");
+                }
+            }
+        };
+
+        fillButton.setOnAction(e -> autoFill.run());
+        hint.setOnMouseClicked(e -> autoFill.run());
 
         roleSelector.setOnAction(event -> {
             String accountHint = switch (roleSelector.getValue()) {
@@ -151,8 +180,11 @@ public class LoginView extends BorderPane {
                 case WASTE_PICKER -> "picker1@wasteconnect.com / Picker@123";
             };
             hint.setText(accountHint);
+            autoFill.run();
         });
         roleSelector.fireEvent(new javafx.event.ActionEvent());
+
+        hintRow.getChildren().addAll(hintTitle, hint, fillButton);
 
         formPanel.getChildren().addAll(title, subTitle, fields, hintRow);
 
