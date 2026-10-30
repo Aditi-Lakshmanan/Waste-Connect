@@ -37,7 +37,7 @@ Write-Host ""
 
 switch ($Action) {
     "test" {
-        Write-Host "Running 47 comprehensive tests..." -ForegroundColor Yellow
+        Write-Host "Running 49 comprehensive tests..." -ForegroundColor Yellow
         & $mvnCmd test
     }
     "compile" {

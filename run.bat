@@ -30,7 +30,7 @@ echo.
 
 echo Choose an action:
 echo  1. Launch WasteConnect Desktop Application (Default)
-echo  2. Run Full Test Suite (47 automated tests)
+echo  2. Run Full Test Suite (49 automated tests)
 echo  3. Clean and Recompile
 echo  4. Exit
 echo.
