@@ -40,7 +40,11 @@ public class Bin implements Routable, Scorable, Exportable {
         this.lastCollectedAt = lastCollectedAt != null ? lastCollectedAt : LocalDateTime.now();
         this.status = status != null ? status : BinStatus.NORMAL;
         this.openComplaintsCount = Math.max(0, openComplaintsCount);
-        setFillLevel(currentFillPercentage);
+        if (currentFillPercentage < 0.0 || currentFillPercentage > 100.0) {
+            throw new IllegalArgumentException(String.format("Bin fill level must be between 0.0 and 100.0%%. Received: %.2f", currentFillPercentage));
+        }
+        this.currentFillPercentage = currentFillPercentage;
+        updateStatusFromFillLevel();
     }
 
     // ENCAPSULATION: Validated setter ensuring strict adherence to physical limits [0, 100]

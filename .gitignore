@@ -1,0 +1,8 @@
+target/
+*.class
+*.lck
+*.lock.db
+*.trace.db
+logs/*.lck
+.idea/
+*.iml

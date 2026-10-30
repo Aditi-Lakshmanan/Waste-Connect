@@ -15,7 +15,6 @@ import com.wasteconnect.model.WasteAnalytics;
 import com.wasteconnect.model.WastePicker;
 import com.wasteconnect.model.Zone;
 import com.wasteconnect.model.Route;
-import com.wasteconnect.model.Vehicle;
 import com.wasteconnect.pattern.FixedScheduleStrategy;
 import com.wasteconnect.pattern.PriorityStrategy;
 import com.wasteconnect.pattern.RoutingStrategy;
@@ -41,7 +40,6 @@ import javafx.scene.control.PasswordField;
 import javafx.stage.FileChooser;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import com.wasteconnect.model.Location;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -67,7 +65,8 @@ public class AdminWorkspaceView extends BorderPane {
     // Holds the currently displayed Zone objects for edit/delete actions
     private List<Zone> currentZonePage = new ArrayList<>();
     // Holds the currently displayed Vehicle objects for edit/delete actions
-    private List\u003cVehicle\u003e currentVehiclePage = new ArrayList\u003c\u003e();
+    private final VBox navigation = new VBox(8);
+    private List<Vehicle> currentVehiclePage = new ArrayList<>();
     // Holds the currently displayed Bin objects for edit/delete actions
     private List<Bin> currentBinPage = new ArrayList<>();
 
@@ -247,42 +246,6 @@ public class AdminWorkspaceView extends BorderPane {
         binFilterControls.setManaged(binFilterControls.isVisible());
         simulatorControls.setVisible("simulator".equals(currentModule));
         simulatorControls.setManaged(simulatorControls.isVisible());
-        moduleActionControls.setVisible(
-                "households".equals(currentModule) || "zones".equals(currentModule) ||
-                "bins".equals(currentModule) || "vehicles".equals(currentModule) ||
-                "collectors".equals(currentModule) || "complaints".equals(currentModule) ||
-                "pickers".equals(currentModule));
-        moduleActionControls.setManaged(moduleActionControls.isVisible());
-
-        switch (currentModule) {
-            case "households" -> {
-                configureHouseholdActions();
-                showHouseholds(query);
-            }
-            case "zones" -> {
-                configureZoneActions();
-                showZones(query);
-            }
-            case "bins" -> {
-                configureBinActions();
-                showBins(query);
-            }
-            case "vehicles" -> {
-                configureVehicleActions();
-                showVehicles(query);
-            }
-            default -> {
-                // other modules will be implemented later
-            }
-        }
-    }
-        String query = searchField.getText() == null ? "" : searchField.getText().trim();
-        routeControls.setVisible("routes".equals(currentModule));
-        routeControls.setManaged("routes".equals(currentModule));
-        binFilterControls.setVisible("bins".equals(currentModule));
-        binFilterControls.setManaged(binFilterControls.isVisible());
-        simulatorControls.setVisible("simulator".equals(currentModule));
-        simulatorControls.setManaged(simulatorControls.isVisible());
         moduleActionControls.setVisible("households".equals(currentModule) || "zones".equals(currentModule)
             || "bins".equals(currentModule) || "vehicles".equals(currentModule) || "collectors".equals(currentModule)
             || "complaints".equals(currentModule) || "pickers".equals(currentModule));
@@ -375,7 +338,7 @@ public class AdminWorkspaceView extends BorderPane {
                         List.of("Hazardous waste", String.format("%.1f kg", analytics.totalHazardousKg())),
                         List.of("E-waste", String.format("%.1f kg", analytics.totalEWasteKg())),
                         List.of("Distance saved", String.format("%.1f km", analytics.estimatedDistanceSavedKm())),
-                        List.of("Fuel savings", String.format("₹%.0f", analytics.fuelCostSavedInr())));
+                        List.of("Fuel savings", String.format("INR %.0f", analytics.fuelCostSavedInr())));
             }
             default -> {
                 moduleTitle.setText("Operations overview");

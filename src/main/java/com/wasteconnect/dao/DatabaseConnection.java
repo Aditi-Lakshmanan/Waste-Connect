@@ -20,7 +20,7 @@ import java.util.Random;
  */
 public final class DatabaseConnection {
     private static volatile DatabaseConnection instance;
-    private static String dbUrl = "jdbc:h2:file:./data/wasteconnect;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1";
+    private static String dbUrl = "jdbc:h2:file:./data/wasteconnect;DB_CLOSE_DELAY=-1";
     private Connection connection;
 
     private DatabaseConnection() {
