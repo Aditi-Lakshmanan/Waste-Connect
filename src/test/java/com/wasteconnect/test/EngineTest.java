@@ -1,5 +1,6 @@
 package com.wasteconnect.test;
 
+import com.wasteconnect.dao.*;
 import com.wasteconnect.engine.*;
 import com.wasteconnect.model.*;
 import com.wasteconnect.pattern.FixedScheduleStrategy;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -103,5 +105,40 @@ public class EngineTest {
         assertNotNull(comparison.priorityResult());
         assertTrue(comparison.priorityResult().overflowIncidentsPrevented() >= 0);
         assertTrue(comparison.fixedResult().totalDistanceKm() > 0.0);
+    }
+
+    @Test
+    @DisplayName("Engine: HotspotDetector identifies vulnerable zones and ranks by composite risk")
+    void testHotspotDetector() {
+        HotspotDetector detector = new HotspotDetector();
+        List<HotspotReport> reports = detector.detectHotspots();
+
+        assertNotNull(reports);
+        if (!reports.isEmpty()) {
+            HotspotReport top = reports.get(0);
+            assertNotNull(top.zoneId());
+            assertNotNull(top.riskLevel());
+            assertNotNull(top.recommendation());
+            assertTrue(top.riskScore() >= 0.0 && top.riskScore() <= 100.0);
+        }
+    }
+
+    @Test
+    @DisplayName("Engine: SmartBinSimulator manages lifecycle, speed multiplier, and festival surge")
+    void testSmartBinSimulator() {
+        SmartBinSimulator simulator = new SmartBinSimulator();
+        assertFalse(simulator.isRunning());
+
+        simulator.setSpeedMultiplier(3.5);
+        assertEquals(3.5, simulator.getSpeedMultiplier(), 0.01);
+
+        simulator.start();
+        assertTrue(simulator.isRunning());
+
+        simulator.triggerFestivalSurge();
+        simulator.resetData();
+
+        simulator.stop();
+        assertFalse(simulator.isRunning());
     }
 }

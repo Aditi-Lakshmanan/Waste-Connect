@@ -122,11 +122,11 @@ Run all test suites with:
 mvn test
 ```
 
-**Results: 47 tests run, 0 failures, 0 errors, 0 skipped (100% PASS)**
+**Results: 49 tests run, 0 failures, 0 errors, 0 skipped (100% PASS)**
 - `EndToEndFlowsTest`: 8 tests covering T1–T8 operational scenarios
 - `DaoAndServiceTest`: 22 tests covering CRUD, transactions, filtering, and analytics
 - `OopPillarsTest`: 7 tests verifying encapsulation, polymorphism, and inheritance
-- `EngineTest`: 4 tests verifying priority scoring, routing algorithms, and hotspot detection
+- `EngineTest`: 6 tests verifying priority scoring, routing algorithms, hotspot detection, and IoT telemetry simulation
 - `UtilTest`: 3 tests verifying password hashing, email validation, and phone validation
 - `EventBusTest`: 2 tests verifying typed event dispatch and subscription lifecycle
 - `NotificationServiceTest`: 1 test verifying notification persistence and unread count
