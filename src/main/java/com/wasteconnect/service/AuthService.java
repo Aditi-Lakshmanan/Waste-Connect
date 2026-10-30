@@ -94,6 +94,7 @@ public class AuthService {
      * Registers a new Citizen resident.
      */
     public Citizen registerCitizen(String name, String email, String password, String address, String phone, String zoneId) {
+        ensureAdmin();
         Validators.validateNonBlank(name, "Full Name");
         Validators.validateEmail(email);
         Validators.validatePasswordStrength(password);
@@ -115,6 +116,7 @@ public class AuthService {
      * Registers a new Waste Picker informal recycling partner.
      */
     public WastePicker registerWastePicker(String name, String email, String password, String phone, String vehicleDesc) {
+        ensureAdmin();
         Validators.validateNonBlank(name, "Full Name");
         Validators.validateEmail(email);
         Validators.validatePasswordStrength(password);
