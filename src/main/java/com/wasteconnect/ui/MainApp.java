@@ -21,4 +21,13 @@ public class MainApp extends Application {
         stage.setTitle("WasteConnect – Smart Waste Collection Management System");
         stage.show();
     }
+
+    @Override
+    public void stop() {
+        try {
+            DatabaseConnection.getInstance().close();
+        } catch (Exception ignored) {
+        }
+        System.exit(0);
+    }
 }
