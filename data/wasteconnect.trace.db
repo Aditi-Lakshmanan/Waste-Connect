@@ -1,0 +1,145 @@
+2026-10-29 10:49:08.149455+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-29 10:49:08.150754+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
+2026-10-29 10:49:08.176243+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "    CREATE TABLE IF NOT EXISTS settings (\000a        [*]key TEXT PRIMARY KEY,\000a        value TEXT NOT NULL,\000a        description TEXT\000a    );\000a"; expected "identifier"; SQL statement:
+    CREATE TABLE IF NOT EXISTS settings (
+        key TEXT PRIMARY KEY,
+        value TEXT NOT NULL,
+        description TEXT
+    );
+ [42001-232]
+2026-10-29 10:49:08.222413+05:30 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-29 10:49:08.223413+05:30 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
+2026-10-29 10:49:08.226797+05:30 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "    CREATE TABLE IF NOT EXISTS settings (\000a        [*]key TEXT PRIMARY KEY,\000a        value TEXT NOT NULL,\000a        description TEXT\000a    );\000a"; expected "identifier"; SQL statement:
+    CREATE TABLE IF NOT EXISTS settings (
+        key TEXT PRIMARY KEY,
+        value TEXT NOT NULL,
+        description TEXT
+    );
+ [42001-232]
+2026-10-29 10:49:32.250226+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-29 10:49:32.252226+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
+2026-10-29 10:49:42.949746+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-29 10:49:42.951750+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
+2026-10-29 10:51:09.886477+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-29 10:51:09.889440+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
+2026-10-29 10:54:06.341471+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-29 10:54:06.343788+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
+2026-10-29 10:56:29.381755+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-29 10:56:29.382754+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
+2026-10-29 10:59:08.733365+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-29 10:59:08.734363+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
+2026-10-29 11:10:25.263687+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-29 11:10:25.264687+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
+2026-10-29 11:13:16.650604+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-29 11:13:16.651608+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
+2026-10-29 11:13:45.458359+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-29 11:13:45.460370+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
+2026-10-29 11:13:45.730642+05:30 database: close
+org.h2.message.DbException: IO Exception: "Closing" [90028-232]
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.mvstore.db.Store.close(Store.java:374)
+	at org.h2.engine.Database.closeOpenFilesAndUnlock(Database.java:1292)
+	at org.h2.engine.Database.closeImpl(Database.java:1254)
+	at org.h2.engine.Database.close(Database.java:1173)
+	at org.h2.engine.Database.onShutdown(Database.java:1158)
+	at org.h2.engine.OnExitDatabaseCloser.onShutdown(OnExitDatabaseCloser.java:85)
+	at org.h2.engine.OnExitDatabaseCloser.run(OnExitDatabaseCloser.java:114)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: IO Exception: "Closing" [90028-232]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 8 more
+Caused by: org.h2.mvstore.MVStoreException: java.lang.AssertionError [2.3.232/3]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:996)
+	at org.h2.mvstore.MVStore.executeFilestoreOperation(MVStore.java:926)
+	at org.h2.mvstore.RandomAccessStore.compactMoveChunks(RandomAccessStore.java:463)
+	at org.h2.mvstore.RandomAccessStore.compactStore(RandomAccessStore.java:443)
+	at org.h2.mvstore.FileStore.compactStore(FileStore.java:890)
+	at org.h2.mvstore.FileStore.stop(FileStore.java:275)
+	at org.h2.mvstore.MVStore.closeStore(MVStore.java:693)
+	at org.h2.mvstore.MVStore.close(MVStore.java:643)
+	at org.h2.mvstore.db.Store.close(Store.java:364)
+	... 6 more
+Caused by: java.lang.AssertionError
+	at org.h2.mvstore.RandomAccessStore.moveChunkInside(RandomAccessStore.java:630)
+	at org.h2.mvstore.RandomAccessStore.compactMoveChunks(RandomAccessStore.java:569)
+	at org.h2.mvstore.RandomAccessStore.compactMoveChunks(RandomAccessStore.java:481)
+	at org.h2.mvstore.RandomAccessStore.lambda$compactMoveChunks$1(RandomAccessStore.java:468)
+	at org.h2.mvstore.FileStore.executeFileStoreOperation(FileStore.java:1893)
+	at org.h2.mvstore.MVStore.executeFilestoreOperation(MVStore.java:922)
+	... 13 more
+2026-10-29 11:14:12.365478+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-29 11:14:12.367538+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
+2026-10-29 11:22:40.755439+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-29 11:22:40.756440+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
+2026-10-29 11:32:18.859260+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-29 11:32:18.861595+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
+2026-10-29 11:53:59.345488+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-29 11:53:59.348489+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
+2026-10-29 12:00:31.115662+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-29 12:00:31.116674+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
