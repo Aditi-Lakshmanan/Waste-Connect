@@ -31,6 +31,8 @@
 | **Admin Complaints** | Assign to Collector / Update Status | Route assignment and status transition with notes | **Working** | `testAdminAssignsComplaintToZoneCollector` (T4) |
 | **Admin Waste Pickers** | Picker Verification Table | Display informal recycling partners and verification status | **Working** | Verified via `adminService.getAllPickers` |
 | **Admin Waste Pickers** | Approve / Reject Picker Buttons | Update verification state and dispatch alert | **Working** | `testAdminPickerVerification` (T5) |
+| **Admin Hotspots** | Garbage Vulnerable Hotspots Table | Proximity clustering of complaints & overflows with risk scores & action recommendation | **Working** | `HotspotDetector.detectHotspots` loaded asynchronously |
+| **Admin Benchmark** | Algorithmic Route Benchmark Table | Quantitative comparison between Fixed-Schedule and Priority routing with zone selection | **Working** | `BenchmarkEngine.runBenchmark` loaded asynchronously |
 | **Admin Simulator** | Start / Stop / Speed Slider / Surge / Reset | Simulate real-time IoT bin fill levels | **Working** | `SmartBinSimulator` engine with EventBus updates |
 | **Admin Reports** | CSV Export Controls | Export Households, Bins, Complaints, and Points to CSV | **Working** | `CsvExporter` integrated with file chooser |
 | **Admin Analytics** | Municipal Metrics Table | Display segregation rate, collection efficiency, fuel savings | **Working** | `testMunicipalAnalyticsCalculation` |

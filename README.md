@@ -90,6 +90,7 @@ WasteConnect implements and validates 8 core end-to-end municipal flows, verifie
   - **Factory Pattern**: `UserFactory`, `VehicleFactory`, and `WasteFactory`.
   - **Observer / EventBus Pattern**: Singleton typed `EventBus` enabling real-time UI updates across screens without polling.
   - **DAO & Singleton Pattern**: Thread-safe `DatabaseConnection` managing transactional SQLite/H2 connections.
+  - **Asynchronous UI & Background Loading**: Thread-safe `BackgroundLoader` leveraging `javafx.concurrent.Task` on daemon threads to offload heavy operations (hotspot clustering, route benchmark simulations, CSV report streaming) while keeping the JavaFX application thread responsive.
 
 ---
 
