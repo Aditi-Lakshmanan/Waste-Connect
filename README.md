@@ -8,7 +8,20 @@ WasteConnect is a comprehensive Java-based municipal operations and smart waste 
 - Java 17+ (JDK / OpenJDK)
 - Apache Maven 3.8+
 
-### Build and Run
+### 1-Click Execution (Windows)
+Double-click `run.bat` in File Explorer, or execute in PowerShell:
+```powershell
+# Launch the JavaFX Desktop Application (Default)
+.\run.ps1
+
+# Run the 47-test automated verification suite
+.\run.ps1 -Action test
+
+# Clean and recompile
+.\run.ps1 -Action compile
+```
+
+### Manual Command-Line Execution
 
 ```bash
 # 1. Compile the project
