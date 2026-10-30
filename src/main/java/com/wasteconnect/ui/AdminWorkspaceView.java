@@ -150,6 +150,8 @@ public class AdminWorkspaceView extends BorderPane {
         addNavigationItem("Routes", "routes");
         addNavigationItem("Complaints", "complaints");
         addNavigationItem("Waste pickers", "pickers");
+        addNavigationItem("Hotspots", "hotspots");
+        addNavigationItem("Benchmark", "benchmark");
         addNavigationItem("Analytics", "analytics");
         addNavigationItem("Simulator", "simulator");
         addNavigationItem("Reports", "reports");
@@ -324,6 +326,46 @@ public class AdminWorkspaceView extends BorderPane {
                         String.format("%.1f kg", picker.getTotalKgCollected())))
                         .toList();
                     configurePickerActions();
+            }
+            case "hotspots" -> {
+                moduleTitle.setText("Garbage Vulnerable Hotspots");
+                headers = List.of("Zone", "Risk Level", "Score", "Complaints", "Overflows", "Location", "Recommendation");
+                rows = adminService.detectHotspots().stream().map(h -> List.of(
+                        h.zoneName(), h.riskLevel(), String.format("%.1f", h.riskScore()),
+                        Integer.toString(h.complaintCount()), Integer.toString(h.overflowCount()),
+                        coordinates(h.latitude(), h.longitude()), h.recommendation()))
+                        .toList();
+            }
+            case "benchmark" -> {
+                moduleTitle.setText("Route Optimization Benchmark");
+                headers = List.of("Metric / Strategy", "Fixed-Schedule (Traditional)", "Priority-Based (WasteConnect)", "Advantage");
+                Zone firstZone = adminService.getAllZones().isEmpty() ? null : adminService.getAllZones().get(0);
+                if (firstZone != null) {
+                    try {
+                        var comp = adminService.runBenchmark(firstZone.getId());
+                        rows = List.of(
+                                List.of("Total Distance", String.format("%.1f km", comp.fixedResult().totalDistanceKm()),
+                                        String.format("%.1f km", comp.priorityResult().totalDistanceKm()),
+                                        String.format("%.1f%% saved", comp.getDistanceSavedPercentage())),
+                                List.of("Stops Evaluated", Integer.toString(comp.fixedResult().totalStopsEvaluated()),
+                                        Integer.toString(comp.priorityResult().totalStopsEvaluated()), "Full Coverage"),
+                                List.of("Missed Pickups", Integer.toString(comp.fixedResult().missedPickups()),
+                                        Integer.toString(comp.priorityResult().missedPickups()),
+                                        String.format("%d avoided", comp.getMissedPickupsReduction())),
+                                List.of("Overflows Prevented", Integer.toString(comp.fixedResult().overflowIncidentsPrevented()),
+                                        Integer.toString(comp.priorityResult().overflowIncidentsPrevented()), "Proactive Emptying"),
+                                List.of("Fill at Collection", String.format("%.1f%%", comp.fixedResult().averageFillAtCollection()),
+                                        String.format("%.1f%%", comp.priorityResult().averageFillAtCollection()),
+                                        String.format("+%.1f%% efficiency", comp.getEfficiencyGainPercentage())),
+                                List.of("Execution Time", comp.fixedResult().executionTimeMs() + " ms",
+                                        comp.priorityResult().executionTimeMs() + " ms", "Sub-second Optimal")
+                        );
+                    } catch (Exception e) {
+                        rows = List.of(List.of("Benchmark Status", "Run Error: " + e.getMessage(), "-", "-"));
+                    }
+                } else {
+                    rows = List.of();
+                }
             }
             case "analytics" -> {
                 moduleTitle.setText("Analytics");
@@ -1385,7 +1427,9 @@ public class AdminWorkspaceView extends BorderPane {
             case "Household ID", "Complaint ID", "Complaint", "Vehicle ID", "Picker ID" -> 150;
             case "Zone", "Code", "Status", "Type", "Fill", "Active", "Verified", "Records" -> 120;
             case "Citizen", "Name", "Capacity", "Market area", "Collected", "Value" -> 150;
-            case "Address", "Description", "Assigned collector", "Coverage" -> 360;
+            case "Address", "Description", "Assigned collector", "Coverage", "Recommendation" -> 360;
+            case "Location", "Advantage" -> 220;
+            case "Risk Level", "Score", "Overflows", "Complaints" -> 130;
             case "Email", "Registration" -> 230;
             default -> 170;
         };

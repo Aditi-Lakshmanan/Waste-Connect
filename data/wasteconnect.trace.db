@@ -550,3 +550,9 @@ Caused by: java.lang.AssertionError
 	at org.h2.mvstore.FileStore.executeFileStoreOperation(FileStore.java:1893)
 	at org.h2.mvstore.MVStore.executeFilestoreOperation(MVStore.java:922)
 	... 13 more
+2026-10-30 11:31:52.450650+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA foreign_keys = ON;"; expected "PREPARE"; SQL statement:
+PRAGMA foreign_keys = ON; [42001-232]
+2026-10-30 11:31:52.453748+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRAGMA journal_mode = WAL;"; expected "PREPARE"; SQL statement:
+PRAGMA journal_mode = WAL; [42001-232]
